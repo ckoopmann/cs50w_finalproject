@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse 
 
+messages = ['Welcome to Djoodle from the template!',
+        'So Welcome']
+title = 'Test'
 def home(request):
-   return HttpResponse('<h1>Welcome to Djoodle</h1>')
-
-def about(request):
-   return HttpResponse('<h1>About Djoodle</h1>')
+    context = {
+            'messages': messages,
+            'title': title
+    }
+    return render(request, 'survey/home.html', context)
