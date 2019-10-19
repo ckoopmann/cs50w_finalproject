@@ -1,4 +1,7 @@
 {% extends "survey/layout.html" %}
 {% block body %}
 	<h1>Welcome to Djoodle</h1>
+	{% for survey in surveys %}
+		<h3>{{survey}}</h3>
+	{% endfor %}
 {% endblock  %}
