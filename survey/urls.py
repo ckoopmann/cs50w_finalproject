@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import SurveyDetailView, SurveyListView
 
 urlpatterns = [
-    path('', views.home, name='survey-home'),
+    path('', SurveyListView.as_view(), name='survey-home'),
+    path('survey/<int:pk>', SurveyDetailView.as_view(), name='survey-detail'),
 ]

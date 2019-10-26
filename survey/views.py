@@ -1,12 +1,12 @@
 from django.shortcuts import render
+from django.views.generic import DetailView, ListView
 from .models import Survey
 
-messages = ['Welcome to Djoodle from the template!',
-        'So Welcome']
-title = 'Test'
-def home(request):
-    context = {
-            'title': title,
-            'surveys': Survey.objects.all()
-    }
-    return render(request, 'survey/home.html', context)
+class SurveyListView(ListView):
+    model = Survey
+    template_name = 'survey/home.html'
+    context_object_name = 'surveys'
+    ordering = ['-date_created']
+
+class SurveyDetailView(DetailView):
+    model = Survey

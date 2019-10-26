@@ -8,7 +8,7 @@
               <a class="mr-2" href="#">{{ survey.author }}</a>
               <small class="text-muted">{{ survey.date_created|date:"F d, Y" }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ survey.title }}</a></h2>
+			<h2><a class="article-title" href="{% url 'survey-detail' survey.id %}">{{ survey.title }}</a></h2>
             <p class="article-content">{{ survey.description }}</p>
           </div>
         </article>
