@@ -1,6 +1,7 @@
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+from django.utils import timezone
 
 # Create your models here.
 
@@ -15,6 +16,9 @@ class Survey(models.Model):
 
     def __str__(self):
         return f'Title: {self.title}, Author: {self.author}'
+
+    def get_absolute_url(self):
+        return reverse('survey-detail', kwargs={'pk':self.id})
 
 class SurveyOption(models.Model):
     """One available Option of a survey that can potentially be selected by anyone participating in the survey"""
