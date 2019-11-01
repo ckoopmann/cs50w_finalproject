@@ -1,0 +1,26 @@
+{% extends "survey/layout.html" %}
+
+{% load crispy_forms_tags %}
+{% block title %}Create New Option{% endblock %}
+
+{% block body %}
+<h1>Create New Option</h1>
+{% if message %}
+    <div>
+        {{ message }}
+    </div>
+{% endif %}
+<div class="content-section">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class = "border_bottom mb-4">Survey Option</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class = "btn btn-outline-info" type="submit">Save</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

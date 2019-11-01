@@ -9,6 +9,16 @@
 		</div>
 		<h2 class="article-title" >{{ object.title }}</h2>
 		<p class="article-content">{{ object.description }}</p>
+		<ul class="article-content">
+			{% for survey_option in object.surveyoption_set.all %}
+			<li>
+				{{survey_option}} <a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-delete' survey_option.id%}'>Delete</a>
+			</li>
+			{% endfor%}
+			{% if object.author == user %}
+			<li><a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-create' object.id%}'>Create New Option</a></li>
+			{% endif %}
+		</ul>
 		{% if object.author == user %}
 			<div class="form-group">
 				<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'survey-delete' object.id%}'>Delete</a>
