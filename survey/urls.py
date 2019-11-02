@@ -6,7 +6,8 @@ from .views import (
         SurveyListView,
         SurveyOptionCreateView,
         SurveyOptionDeleteView,
-        SurveyUpdateView
+        SurveyUpdateView,
+        VoteCreateView
 )
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     path('survey/<int:pk>/', SurveyDetailView.as_view(), name='survey-detail'),
     path('survey/<int:pk>/update/', SurveyUpdateView.as_view(), name='survey-update'),
     path('survey/<int:pk>/delete/', SurveyDeleteView.as_view(), name='survey-delete'),
+    path('survey/<int:pk>/newvote/', VoteCreateView.as_view(), name='vote-create'),
     path('survey/deleteoption/<int:pk>/', SurveyOptionDeleteView.as_view(), name='surveyoption-delete'),
 ]

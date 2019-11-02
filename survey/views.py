@@ -7,7 +7,8 @@ from django.views.generic import (
     DetailView,
     ListView,
     UpdateView)
-from .models import Survey, SurveyOption
+from .models import Survey, SurveyOption, Vote
+from .forms import VoteForm
 
 class SurveyListView(ListView):
     model = Survey
@@ -80,4 +81,19 @@ class SurveyOptionDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView
         return reverse('survey-detail', kwargs={'pk': surveyoption.survey.id})
 
 
+class VoteCreateView(LoginRequiredMixin, CreateView):
+    form_class = VoteForm
+    model = Vote
 
+    def get_success_url(self):
+            return reverse('survey-detail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_form_kwargs(self):
+            kwargs = super(VoteCreateView, self).get_form_kwargs()
+            kwargs.update({'pk': self.kwargs.get('pk')})
+            return kwargs
+
+    def get_context_data(self, **kwargs):
+        ctx = super(VoteCreateView, self).get_context_data(**kwargs)
+        ctx['survey'] = Survey.objects.get(pk=self.kwargs['pk'])
+        return ctx

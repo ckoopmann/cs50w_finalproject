@@ -11,20 +11,19 @@
 		<p class="article-content">{{ object.description }}</p>
 		<ul class="article-content">
 			{% for survey_option in object.surveyoption_set.all %}
-			<li>
-				{{survey_option}} <a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-delete' survey_option.id%}'>Delete</a>
-			</li>
+			<li> {{survey_option}} {% if object.author == user %}<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-delete' survey_option.id%}'>Delete</a>{% endif %}</li>
 			{% endfor%}
 			{% if object.author == user %}
-			<li><a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-create' object.id%}'>Create New Option</a></li>
+			<li><a class = "btn btn-outline-primary mt-1 mb-1" href='{% url 'surveyoption-create' object.id%}'>Create New Option</a></li>
 			{% endif %}
 		</ul>
-		{% if object.author == user %}
-			<div class="form-group">
+		<div class="form-group">
+			{% if object.author == user %}
 				<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'survey-delete' object.id%}'>Delete</a>
-				<a class = "btn btn-outline-secondary mt-1 mb-1" href='{% url 'survey-update' object.id%}'>Update</a>
-			</div>
-		{% endif %}
+				<a class = "btn btn-outline-primary mt-1 mb-1" href='{% url 'survey-update' object.id%}'>Update</a>
+			{% endif %}
+			<a class = "btn btn-outline-primary mt-1 mb-1" href='{% url 'vote-create' object.id%}'>Vote</a>
+		</div>
 		</div>
 	</article>
 {% endblock  %}
