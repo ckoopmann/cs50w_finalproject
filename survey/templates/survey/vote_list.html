@@ -1,0 +1,14 @@
+{% extends "survey/layout.html" %}
+{% block body %}
+<h2>Votes for: <i>{{surveyoption.description}}</i></h2>
+	{% for vote in votes %}
+		<article class="media content-section">
+          <div class="media-body">
+			  <b class="article-title" >{{ vote.voter }} voted for this on {{ vote.date_created }}</b>
+			{% if survey.author == user %}
+				<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'vote-delete' vote.id%}'>Delete</a>
+			{% endif %}
+        </article>
+	{% endfor %}	
+	<a class = "btn btn-outline-secondary" href='{% url 'survey-detail' surveyoption.survey.id%}'>Back</a>
+{% endblock  %}

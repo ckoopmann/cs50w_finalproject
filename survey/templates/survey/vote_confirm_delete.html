@@ -1,0 +1,26 @@
+{% extends "survey/layout.html" %}
+
+{% block title %}Delete Vote{% endblock %}
+
+{% block body %}
+<h1>Delete Vote</h1>
+{% if message %}
+    <div>
+        {{ message }}
+    </div>
+{% endif %}
+<div class="content-section">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class = "border_bottom mb-4">Delete Vote</legend>
+			<h2>Do you reallly want to delete: <i>{{object.voter}}</i> vote for <i>{{object.survey_option.description}}</i> ?</h2>
+        </fieldset>
+        <div class="form-group">
+            <button class = "btn btn-outline-danger" type="submit">Delete</button>
+			<a class = "btn btn-outline-secondary" href='{% url 'vote-list' object.survey_option.id%}'>Cancel</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

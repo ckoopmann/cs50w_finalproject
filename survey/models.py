@@ -10,7 +10,6 @@ class Survey(models.Model):
     title = models.CharField(max_length=30) 
     description = models.CharField(max_length=300) 
     date_created = models.DateTimeField(default=timezone.now)
-    allow_create_new_option = models.BooleanField(default=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -33,6 +32,7 @@ class Vote(models.Model):
     """A vote that has been cast for a specific option of a specific survey"""
     survey_option = models.ForeignKey(SurveyOption, on_delete=models.CASCADE)
     voter = models.CharField(max_length=30) 
+    date_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'{self.voter} chose {self.survey_option.description}'

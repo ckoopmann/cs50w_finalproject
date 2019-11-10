@@ -11,7 +11,7 @@
 		<p class="article-content">{{ object.description }}</p>
 		<ul class="article-content">
 			{% for survey_option in object.surveyoption_set.all %}
-			<li> {{survey_option}} {% if object.author == user %}<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-delete' survey_option.id%}'>Delete</a>{% endif %}</li>
+			<li> {{survey_option}} - <a href='{% url 'vote-list' survey_option.id%}'>{{survey_option.vote_set.count}} Vote(s) </a>{% if object.author == user %}<a class = "btn btn-outline-danger mt-1 mb-1" href='{% url 'surveyoption-delete' survey_option.id%}'>Delete</a>{% endif %}</li>
 			{% endfor%}
 			{% if object.author == user %}
 			<li><a class = "btn btn-outline-primary mt-1 mb-1" href='{% url 'surveyoption-create' object.id%}'>Create New Option</a></li>

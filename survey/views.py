@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import (
     CreateView,
@@ -10,11 +10,22 @@ from django.views.generic import (
 from .models import Survey, SurveyOption, Vote
 from .forms import VoteForm
 
+def home(request):
+
+    if request.user.is_authenticated:
+        return redirect('survey-list')
+
+    return render(request, "survey/about.html")
+
+
 class SurveyListView(ListView):
     model = Survey
     template_name = 'survey/home.html'
     context_object_name = 'surveys'
     ordering = ['-date_created']
+    
+    def get_queryset(self):
+        return Survey.objects.filter(author=self.request.user)
 
 class SurveyDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Survey
@@ -81,7 +92,7 @@ class SurveyOptionDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView
         return reverse('survey-detail', kwargs={'pk': surveyoption.survey.id})
 
 
-class VoteCreateView(LoginRequiredMixin, CreateView):
+class VoteCreateView(CreateView):
     form_class = VoteForm
     model = Vote
 
@@ -97,3 +108,37 @@ class VoteCreateView(LoginRequiredMixin, CreateView):
         ctx = super(VoteCreateView, self).get_context_data(**kwargs)
         ctx['survey'] = Survey.objects.get(pk=self.kwargs['pk'])
         return ctx
+
+class VoteListView(ListView):
+    model = Vote
+    context_object_name = 'votes'
+    ordering = ['-date_created']
+    
+    def get_context_data(self, **kwargs):
+        ctx = super(VoteListView, self).get_context_data(**kwargs)
+        surveyoption =  SurveyOption.objects.get(pk=self.kwargs['pk'])
+        ctx['surveyoption'] = surveyoption
+        ctx['survey'] = surveyoption.survey
+        return ctx
+
+    def get_queryset(self):
+        return Vote.objects.filter(survey_option=self.kwargs.get('pk'))
+
+class VoteDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
+    model = Vote
+
+    def test_func(self):
+        vote = self.get_object()
+        survey_option = vote.survey_option
+        survey = survey_option.survey
+        if self.request.user == survey.author:
+            return True
+        else:
+            return False
+
+    def get_success_url(self):
+        vote = self.get_object()
+        survey_option = vote.survey_option
+        return reverse('vote-list', kwargs={'pk': survey_option.id})
+
+
