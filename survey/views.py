@@ -25,7 +25,7 @@ class SurveyListView(ListView):
     ordering = ['-date_created']
     
     def get_queryset(self):
-        return Survey.objects.filter(author=self.request.user)
+        return Survey.objects.raw(f'SELECT * FROM survey_survey WHERE author_id={self.request.user.id}')
 
 class SurveyDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Survey
